@@ -1,4 +1,4 @@
-// Program to multiply 2 2D arrays using dynamic memory allocation
+// Program to multiply 2 2D arrays (matrices) using dynamic memory allocation
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -7,32 +7,64 @@
 // calloc returns 1D array memory block
 // array of those calloc blocks create a 2D array
 
-int row_ar1 = 0, row_ar2 = 0, row_ar3 = 0, column_ar1 = 0, column_ar2 = 0, column_ar3 = 0;
+int row_matrix1 = 0, row_matrix2 = 0, row_matrix3 = 0, column_matrix1 = 0, column_matrix2 = 0, column_matrix3 = 0;
 
-void initialize(int *array1[row_ar1], int *array2[row_ar2])
+/*  intialize 2 matrices
+    takes 2 integer pointer arrays as argument
+    returns void */
+void initialize_matrices(int *matrix1[row_matrix1], int *matrix2[row_matrix2])
 {
-    // initialize array 1
-    printf("Enter elements in 1st array:\n");
-    for (int row = 0; row < row_ar1; ++row)
-        for (int column = 0; column < column_ar1; ++column)
-            scanf("%d", (array1[row] + column));
+    // initialize 1st matrix
+    printf("\nEnter elements in %d X %d matrix:\n", row_matrix1, column_matrix1);
+    for (int row = 0; row < row_matrix1; ++row)
+        for (int column = 0; column < column_matrix1; ++column)
+            scanf("%d", (matrix1[row] + column));
 
-    // initialize array 2
-    printf("Enter elements in 2nd array:\n");
-    for (int row = 0; row < row_ar2; ++row)
-        for (int column = 0; column < column_ar2; ++column)
-            scanf("%d", (array2[row] + column));
+    // initialize 2nd matrix
+    printf("\nEnter elements in %d X %d matrix:\n", row_matrix2, column_matrix2);
+    for (int row = 0; row < row_matrix2; ++row)
+        for (int column = 0; column < column_matrix2; ++column)
+            scanf("%d", (matrix2[row] + column));
 }
 
-void multiply(int *array1[row_ar1], int *array2[row_ar2], int *array3[row_ar3])
+/*  display 2 matrices
+    takes 2 int pointer arrays as input
+    returns void */
+void display_matrices(int *matrix1[row_matrix1], int *matrix2[row_matrix2])
 {
-    for (int row = 0; row < row_ar1; ++row)
-        for (int column = 0; column < column_ar2; ++column)
+    printf("\nThe Matrices are:\n");
+
+    // display 1st matrix
+    printf("1st Matrix:\n");
+    for (int row = 0; row < row_matrix1; ++row)
+    {
+        for (int column = 0; column < column_matrix1; ++column)
+            printf("%d ", *(matrix1[row] + column));
+        printf("\n");
+    }
+
+    // display 2nd matrix
+    printf("2nd Matrix:\n");
+    for (int row = 0; row < row_matrix2; ++row)
+    {
+        for (int column = 0; column < column_matrix2; ++column)
+            printf("%d ", *(matrix2[row] + column));
+        printf("\n");
+    }
+}
+
+/*  multiply 2 matrices and store the product in 3rd matrix
+    takes 3 integer pointer arrays as argument
+    returns void */
+void multiply_matrices(int *matrix1[row_matrix1], int *matrix2[row_matrix2], int *matrix3[row_matrix3])
+{
+    for (int row = 0; row < row_matrix1; ++row)
+        for (int column = 0; column < column_matrix2; ++column)
         {
             int sum = 0;
-            for (int counter = 0; counter < row_ar2; ++counter)
-                sum += ((*(array1[row] + counter)) * (*(array2[counter] + column)));
-            *(array3[row] + column) = sum;
+            for (int counter = 0; counter < row_matrix2; ++counter)
+                sum += ((*(matrix1[row] + counter)) * (*(matrix2[counter] + column)));
+            *(matrix3[row] + column) = sum;
         }
 
 }
@@ -42,48 +74,53 @@ int main()
     // take rows and columns
     printf("Matrix 1: \n");
     printf("Number of rows: ");
-    scanf("%d", &row_ar1);
+    scanf("%d", &row_matrix1);
     printf("Number of columns: ");
-    scanf("%d", &column_ar1);
+    scanf("%d", &column_matrix1);
     printf("Matrix 2: \n");
     printf("Number of rows: ");
-    scanf("%d", &row_ar2);
+    scanf("%d", &row_matrix2);
     printf("Number of columns: ");
-    scanf("%d", &column_ar2);
+    scanf("%d", &column_matrix2);
 
     // check if multiplication possible
-    if (column_ar1 != row_ar2)
+    if (column_matrix1 != row_matrix2)
     {
         printf("Multiplication not possible!!");
         return 0;
     }
-    row_ar3 = row_ar1;
-    column_ar3 = column_ar2;
+
+    row_matrix3 = row_matrix1;
+    column_matrix3 = column_matrix2;
 
     // create arrays
-    int *array1[row_ar1], *array2[row_ar2], *array3[row_ar1];
-    for (int row = 0; row < row_ar1; ++row)
-        array1[row] = (int *)calloc(column_ar1, sizeof(int));
-    for (int row = 0; row < row_ar2; ++row)
-        array2[row] = (int *)calloc(column_ar2, sizeof(int));
-    for (int row = 0; row < row_ar3; ++row)
-        array3[row] = (int *)calloc(column_ar3, sizeof(int));
+    int *matrix1[row_matrix1], *matrix2[row_matrix2], *matrix3[row_matrix1];
 
-    initialize(array1, array2);
-    multiply(array1, array2, array3);
+    for (int row = 0; row < row_matrix1; ++row)
+        matrix1[row] = (int *)calloc(column_matrix1, sizeof(int));
+    for (int row = 0; row < row_matrix2; ++row)
+        matrix2[row] = (int *)calloc(column_matrix2, sizeof(int));
+    for (int row = 0; row < row_matrix3; ++row)
+        matrix3[row] = (int *)calloc(column_matrix3, sizeof(int));
+
+    initialize_matrices(matrix1, matrix2);
+    display_matrices(matrix1, matrix2);
+    multiply_matrices(matrix1, matrix2, matrix3);
 
     // display product
-    for(int row = 0; row < row_ar3; ++row)
+    printf("\nProduct of the matrices:\n");
+    for(int row = 0; row < row_matrix3; ++row)
     {
-        for(int column = 0; column < column_ar3; ++column)
-            printf("%d ", *(array3[row] + column));
+        for(int column = 0; column < column_matrix3; ++column)
+            printf("%d ", *(matrix3[row] + column));
         printf("\n");
-        array3[row] = realloc(array3[row], 0);
+        // free memory
+        matrix3[row] = realloc(matrix3[row], 0);
     }
 
     // free memory
-    free(array1);
-    free(array2);
+    free(matrix1);
+    free(matrix2);
 
     return 0;
 }
