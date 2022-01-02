@@ -3,3 +3,6 @@
 
 # ignore ALL .jsonfiles
 *.json
+
+# ignore code playground
+test.c
