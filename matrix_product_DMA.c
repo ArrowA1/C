@@ -1,11 +1,12 @@
-// Program to multiply 2 2D arrays (matrices) using dynamic memory allocation
+/*  Program to multiply 2 2D arrays (matrices) using dynamic memory allocation
+ *
+ *  Working algo
+ *  calloc returns 1D array memory block
+ *  array of those calloc blocks create a 2D array
+ */
 
 # include <stdio.h>
 # include <stdlib.h>
-
-// Working algo
-// calloc returns 1D array memory block
-// array of those calloc blocks create a 2D array
 
 int row_matrix1 = 0, row_matrix2 = 0, row_matrix3 = 0, column_matrix1 = 0, column_matrix2 = 0, column_matrix3 = 0;
 
@@ -66,7 +67,6 @@ void multiply_matrices(int *matrix1[row_matrix1], int *matrix2[row_matrix2], int
                 sum += ((*(matrix1[row] + counter)) * (*(matrix2[counter] + column)));
             *(matrix3[row] + column) = sum;
         }
-
 }
 
 int main()
@@ -87,7 +87,7 @@ int main()
     if (column_matrix1 != row_matrix2)
     {
         printf("Multiplication not possible!!");
-        return 0;
+        return 1;
     }
 
     row_matrix3 = row_matrix1;
